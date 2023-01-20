@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCustomerRequest;
 use App\Models\Customer;
+use App\Models\customers;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -15,13 +16,14 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $companies = Customer::all();
-        return response()->json($companies);
+        $customers = Customer::all();
+        return response()->json($customers);
     }
 
-    public function show(Customer $customer)
+    public function show($company_id)
     {
-        return response()->json($customer);
+        $customers = Customer::where('company_id','=',$company_id)->get();
+        return response()->json($customers);
     }
 
     public function store(StoreCustomerRequest $request)
@@ -41,7 +43,14 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer)
     {
-        $customer = Customer::onlyTrashed()->get();
+        $customer->delete();
         return response()->json("Customer Deleted");
     }
+
+    public function deletedData()
+    {
+        $companies = Customer::onlyTrashed()->get();
+        return response()->json($companies);
+    }
+
 }

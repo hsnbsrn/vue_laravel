@@ -1,5 +1,5 @@
 <template>
-   <h1>Welcome pagesssss</h1>
+  <div> Hoşgeldiniz </div>
 </template>
 <script>
     export default {

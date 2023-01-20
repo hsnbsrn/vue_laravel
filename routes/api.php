@@ -3,6 +3,7 @@
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use Illuminate\Http\Request;
+use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,7 @@ Route::apiResource('companies',CompanyController::class);
 Route::get('deletedCompanies', [CompanyController::class, 'deletedData']);
 Route::apiResource('customers',CustomerController::class);
 Route::get('deletedCustomers', [CustomerController::class, 'deletedData']);
+
+
+
+
