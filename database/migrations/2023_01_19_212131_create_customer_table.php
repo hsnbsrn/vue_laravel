@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('birth_date');
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('company')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

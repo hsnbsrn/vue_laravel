@@ -44,4 +44,10 @@ class CompanyController extends Controller
         $company->delete();
         return response()->json("Company Deleted");
     }
+
+    public function deletedData()
+    {
+        $companies = Company::onlyTrashed()->get();
+        return response()->json($companies);
+    }
 }
