@@ -23,7 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('companies',CompanyController::class);
 Route::get('deletedCompanies', [CompanyController::class, 'deletedData']);
+
+
 Route::apiResource('customers',CustomerController::class);
+Route::get('getByCompanyId/{id}',[CustomerController::class, 'getByCompanyId']);
 Route::get('deletedCustomers', [CustomerController::class, 'deletedData']);
 
 

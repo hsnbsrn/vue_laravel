@@ -20,10 +20,10 @@ class CustomerController extends Controller
         return response()->json($customers);
     }
 
-    public function show($company_id)
+    public function show(Customer $customer)
     {
-        $customers = Customer::where('company_id','=',$company_id)->get();
-        return response()->json($customers);
+        
+        return response()->json($customer);
     }
 
     public function store(StoreCustomerRequest $request)
@@ -53,4 +53,9 @@ class CustomerController extends Controller
         return response()->json($companies);
     }
 
+    public function getByCompanyId($company_id)
+    {
+        $customers = Customer::where('company_id','=',$company_id)->get();
+        return response()->json($customers);
+    }
 }

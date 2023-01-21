@@ -3,7 +3,7 @@
     <div class="card ">
         <div class="card-header d-flex justify-content-between align-items-center">
             Şirketler
-            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Şirket Ekle</button>
+            <button @click="clearCompanyandErrors()" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Şirket Ekle</button>
         </div>
         <div class="card-body">
             <table class="table">
@@ -51,11 +51,16 @@
                     <div class="form-group">
                         <label>Şirket İsmi</label>
                         <input type="text" v-model="company.name" class="form-control" id="name">
+                        <div v-if="errors.name" >
+                            <div class="alert alert-danger" role="alert">
+                                {{errors.name[0]}}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Kaydet</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
                 </div>
             </form>
             </div>
@@ -74,11 +79,16 @@
                     <div class="form-group">
                         <label>Şirket İsmi</label>
                         <input type="text" v-model="company.name" class="form-control" id="name">
+                        <div v-if="errors.name" >
+                            <div class="alert alert-danger" role="alert">
+                                {{errors.name[0]}}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Kaydet</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
                 </div>
             </form>
             </div>
@@ -89,7 +99,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Şirket Güncelle</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Şirket Sil</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form >
@@ -111,6 +121,7 @@
 
   <script>
     import axios from 'axios';
+    import Swal from 'sweetalert2'
     export default {
     data() {
         return {
@@ -125,12 +136,13 @@
     },
 
     created() {
-        this.getCompany()
+        this.getCompany();
+        setInterval(()=>this.getCompany(),3000)
     },
     methods: {
         getCompany() {
             var url = "http://localhost:8000/api/companies";
-            axios.get(url).then(response => {
+            axios.get(url).then((response) => {
             this.companies = response.data;
             });
         },
@@ -139,6 +151,13 @@
             axios.post(url, this.company).then(response => {
                 this.success = response.data.success;
                 this.getCompany()
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Şirket eklendi',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 })
                 .catch(error => {
                 if (error.response.status == 422) {
@@ -150,6 +169,7 @@
             return _.head(field);
         },
         editCompany(company){
+            
             this.company=company;
         },
 
@@ -157,19 +177,39 @@
             var url = "http://localhost:8000/api/companies/"+this.company.id;
             axios.put(url, this.company).then(
                 ({data})=>{
-                    this.company.id='',
-                    this.company.name=''
                     this.getCompany();
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Şirket güncellendi',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 }
-            )
+            ).catch(error => {
+                if (error.response.status == 422) {
+                    this.errors = error.response.data.errors;
+                }
+            });
         },
 
         deleteCompany(company) {
             var url = "http://localhost:8000/api/companies/"+company.id;
             axios.delete(url);
-            this.company.id='',
-            this.company.name=''
             this.getCompany();
+            Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Şirket silindi',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+        },
+
+        clearCompanyandErrors(){
+            this.company.id=1
+            this.company.name=''
+            this.errors=[]
         }
 
     
