@@ -25,7 +25,7 @@ Route::post('companies/{id}/restore', [CompanyController::class, 'restore']);
 
 
 Route::apiResource('customers',CustomerController::class);
-Route::get('deletedCustomers', [CustomerController::class, 'deletedData']);
+Route::get('deletedCustomers/{id}', [CustomerController::class, 'deletedData']);
 Route::post('customers/{id}/force_delete', [CustomerController::class, 'forceDelete']);
 Route::post('customers/{id}/restore', [CustomerController::class, 'restore']);
 Route::get('costumers/getByCompanyId/{id}',[CustomerController::class, 'getByCompanyId']);

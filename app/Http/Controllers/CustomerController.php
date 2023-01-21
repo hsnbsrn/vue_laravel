@@ -47,9 +47,9 @@ class CustomerController extends Controller
         return response()->json("Customer Deleted");
     }
 
-    public function deletedData()
+    public function deletedData($id)
     {
-        $companies = Customer::onlyTrashed()->get();
+        $companies = Customer::onlyTrashed()->where('company_id',$id)->get();
         return response()->json($companies);
     }
 

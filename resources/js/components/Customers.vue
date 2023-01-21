@@ -213,16 +213,16 @@
                 </thead>
                 <tbody>
                     <tr v-for="( customer,index) in deleted_customers" v-bind:key="customer.id">
-                        <th v-if="customer.company_id==$route.params.id" scope="row">{{index+1}}</th>
-                        <td v-if="customer.company_id==$route.params.id">{{ customer.first_name }}</td>
-                        <td v-if="customer.is_male==0 & customer.company_id==$route.params.id">Kadın</td>
-                        <td v-if="customer.is_male==1 & customer.company_id==$route.params.id">Erkek</td>
-                        <td v-if="customer.company_id==$route.params.id">{{ customer.city }}</td>
-                        <td v-if="customer.company_id==$route.params.id">{{ customer.country }}</td>
-                        <td v-if="customer.company_id==$route.params.id">{{ customer.birth_date }}</td>
+                        <th scope="row">{{index+1}}</th>
+                        <td>{{ customer.first_name }}</td>
+                        <td v-if="customer.is_male==0">Kadın</td>
+                        <td v-if="customer.is_male==1">Erkek</td>
+                        <td>{{ customer.city }}</td>
+                        <td>{{ customer.country }}</td>
+                        <td>{{ customer.birth_date }}</td>
                         <td>
-                            <a v-if="customer.company_id==$route.params.id" @click="restoreCustomer(customer)"    class="btn btn-sm btn-dark">Geri Yükle</a>
-                            <a v-if="customer.company_id==$route.params.id" @click="forceDeleteCustomer(customer)"   class="btn btn-sm btn-danger">Tamamen Sil</a>
+                            <a @click="restoreCustomer(customer)"    class="btn btn-sm btn-dark">Geri Yükle</a>
+                            <a @click="forceDeleteCustomer(customer)"   class="btn btn-sm btn-danger">Tamamen Sil</a>
                         </td>
                     </tr>
                 </tbody>
@@ -359,7 +359,7 @@
             },
 
             getDeletedCustomer(){
-                var url = "http://localhost:8000/api/deletedCustomers";
+                var url = "http://localhost:8000/api/deletedCustomers/"+this.$route.params.id;
                 axios.get(url).then((response) => {
                 this.deleted_customers = response.data;
                 });
