@@ -11,5 +11,12 @@ class Company extends Model
     use HasFactory,SoftDeletes;
 
     protected $table = 'company';
+
+    public $primaryKey = "id";
+
+    public $timestamps = true;
+
     protected $fillable = ['name'];
+
+    protected $guarded = ["id"];
 }

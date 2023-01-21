@@ -10,6 +10,13 @@ class Customer extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $table = 'customer';
+    protected $table = 'customer';  
+
+    public $primaryKey = "id";
+
+    public $timestamps = true;
+
     protected $fillable = ['is_male','first_name','city','country','birth_date','company_id'];
+
+    protected $guarded = ["id"];
 }

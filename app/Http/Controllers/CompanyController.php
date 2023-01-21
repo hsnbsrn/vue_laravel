@@ -50,4 +50,16 @@ class CompanyController extends Controller
         $companies = Company::onlyTrashed()->get();
         return response()->json($companies);
     }
+
+    public function restore($id)
+    {
+        $company = Company::onlyTrashed()->findOrFail($id);
+        $company->restore();
+    }
+
+    public function forceDelete($id)
+    {
+        $company = Company::onlyTrashed()->findOrFail($id);
+        $company->forceDelete();
+    }
 }

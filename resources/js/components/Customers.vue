@@ -27,11 +27,11 @@
                     <td>{{ customer.country }}</td>
                     <td>{{ customer.birth_date }}</td>
                     <td>
-                        <a @click="editcustomer(customer)" data-bs-toggle="modal" data-bs-target="#exampleModal1"  class="btn btn-sm btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <a @click="editCustomer(customer)" data-bs-toggle="modal" data-bs-target="#exampleModal1"  class="btn btn-sm btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/></svg>
                         </a>
-                        <a @click="editcustomer(customer)" data-bs-toggle="modal" data-bs-target="#exampleModal2" class="btn btn-sm btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <a @click="deleteCustomer(customer)"  class="btn btn-sm btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                             <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>
                         </a>
@@ -51,7 +51,7 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Müşteri Ekle</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form @submit.prevent="storecustomer">
+            <form @submit.prevent="storeCustomer">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>İsim</label>
@@ -126,7 +126,7 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Müşteri Güncelle</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form @submit.prevent="updatecustomer">
+            <form @submit.prevent="updateCustomer">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>İsim</label>
@@ -194,72 +194,80 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Müşteri Sil</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form >
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label><b></b> {{customer.first_name}}isimli müşteriyi silmek istediğinizden emin misiniz?</label>
-                        
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                    <a @click="deletecustomer(customer)"  class="btn btn-danger">Sil</a>
-                </div>
-            </form>
-            </div>
+    <div class="card ">
+        <div class="card-header d-flex justify-content-between align-items-center">
+           <button type="button" class="btn btn-info" v-on:click="isShow = !isShow" @click="getDeletedCustomer()" >Arşivlenmiş Müşterileri Göster</button>
+        </div>
+        <div class="card-body" v-show="isShow" >
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">İsim</th>
+                    <th scope="col">Cinsiyet</th>
+                    <th scope="col">Şehir</th>
+                    <th scope="col">Ülke</th>
+                    <th scope="col">Doğum Tarihi</th>
+                    <th scope="col">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="( customer,index) in deleted_customers" v-bind:key="customer.id">
+                        <th v-if="customer.company_id==$route.params.id" scope="row">{{index+1}}</th>
+                        <td v-if="customer.company_id==$route.params.id">{{ customer.first_name }}</td>
+                        <td v-if="customer.is_male==0 & customer.company_id==$route.params.id">Kadın</td>
+                        <td v-if="customer.is_male==1 & customer.company_id==$route.params.id">Erkek</td>
+                        <td v-if="customer.company_id==$route.params.id">{{ customer.city }}</td>
+                        <td v-if="customer.company_id==$route.params.id">{{ customer.country }}</td>
+                        <td v-if="customer.company_id==$route.params.id">{{ customer.birth_date }}</td>
+                        <td>
+                            <a v-if="customer.company_id==$route.params.id" @click="restoreCustomer(customer)"    class="btn btn-sm btn-dark">Geri Yükle</a>
+                            <a v-if="customer.company_id==$route.params.id" @click="forceDeleteCustomer(customer)"   class="btn btn-sm btn-danger">Tamamen Sil</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
   </template>
   <script >
     import axios from 'axios';
     import Swal from 'sweetalert2'
-
-    
-
     export default {
         
-
-
         data() {
             return {
             success: false,
-            customer: {
-                id:'',
-                company_id:'',
-                birth_date:'',
-                is_male:'',
-                first_name:'',
-                city:'',
-                country:''
-                
-                
-
-            },
-            customers: [],
-            company:{
-                id:'',
-                name:''
-            },
-            errors: []
+                customer: {
+                    id:'',
+                    company_id:'',
+                    birth_date:'',
+                    is_male:'',
+                    first_name:'',
+                    city:'',
+                    country:''
+                },
+                customers: [],
+                deleted_customers: [],
+                company:{
+                    id:'',
+                    name:''
+                },
+                errors: [],
+                isShow : false
             }
         },
 
         created() {
-            this.getcustomer()
+            this.getCustomer()
             this.getCompany()
-            
+            setInterval(()=>this.getCustomer(),5000)
+
         },
 
         methods: {
-            getcustomer() {
-                var url = "http://127.0.0.1:8000/api/getByCompanyId/"+this.$route.params.id;
+            getCustomer() {
+                var url = "http://127.0.0.1:8000/api/costumers/getByCompanyId/"+this.$route.params.id;
                 axios.get(url).then(response => {
                     this.customers = response.data;
                 });
@@ -270,13 +278,13 @@
                 this.company = response.data;
                 });
             },
-            storecustomer() {
+            storeCustomer() {
                 var url = "http://localhost:8000/api/customers";
                 this.customer.company_id=this.$route.params.id;
                 console.log(this.customer)
                 axios.post(url, this.customer).then(response => {
                     this.success = response.data.success;
-                    this.getcustomer()
+                    this.getCustomer()
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
@@ -294,15 +302,15 @@
             error(field) {
                 return _.head(field);
             },
-            editcustomer(customer){
+            editCustomer(customer){
                 this.customer=customer;
             },
 
-            updatecustomer(){
+            updateCustomer(){
                 var url = "http://localhost:8000/api/customers/"+this.customer.id;
                 axios.put(url, this.customer).then(
                     ({data})=>{
-                        this.getcustomer();
+                        this.getCustomer();
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
@@ -314,17 +322,30 @@
                 )
             },
 
-            deletecustomer(customer) {
-                var url = "http://localhost:8000/api/customers/"+customer.id;
-                axios.delete(url);
-                this.getcustomer();
+            deleteCustomer(customer) {
+
                 Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Müşteri silindi',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                title: 'Emin Misin?',
+                text: customer.first_name+" İsimli Müşteriyi Silmek İstediğinize Emin Misin?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sil',
+                cancelButtonText: 'İptal',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var url = "http://localhost:8000/api/customers/"+customer.id;
+                        axios.delete(url);
+                        this.getCustomer();
+                        this.getDeletedCustomer()
+                        Swal.fire(
+                            'Silindi!',
+                            'Müşteri Silindi',
+                            'success'
+                        )
+                    }
+                })  
             },
 
             clearCustomerandErrors(){
@@ -335,6 +356,75 @@
                 this.customer.country=''
                 this.customer.birth_date=''
                 this.errors=[]
+            },
+
+            getDeletedCustomer(){
+                var url = "http://localhost:8000/api/deletedCustomers";
+                axios.get(url).then((response) => {
+                this.deleted_customers = response.data;
+                });
+            },
+            restoreCustomer(customer){
+                Swal.fire({
+                    title: 'Emin Misin?',
+                    text: "Müşteriyi Geri Yükelemek İstediğinize Emin Misin?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Geri Yükle',
+                    cancelButtonText: 'İptal',
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        var url = "http://localhost:8000/api/customers/" + customer.id + "/restore";
+                        axios.post(url, this.customer).then(response => {
+                            this.success = response.data.success;
+                            this.getCustomer()
+                            this.getDeletedCustomer()
+                        }).catch(error => {
+                            if (error.response.status == 422) {
+                                this.errors = error.response.data.errors;
+                            }
+                        });
+
+                        Swal.fire(
+                            'Geri Yüklendi!',
+                            'Müşteri Geri Yüklendi',
+                            'success'
+                        )
+                    }
+                })
+            },
+            forceDeleteCustomer(customer){
+                Swal.fire({
+                    title: 'Emin Misin?',
+                    text: "Müşteriyi Tamamen Silmek İstediğinize Emin Misin?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sil',
+                    cancelButtonText: 'İptal',
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        var url = "http://localhost:8000/api/customers/" + customer.id + "/force_delete";
+                        axios.post(url, this.customer).then(response => {
+                            this.success = response.data.success;
+                            this.getCustomer()
+                            this.getDeletedCustomer()
+                        }).catch(error => {
+                            if (error.response.status == 422) {
+                                this.errors = error.response.data.errors;
+                            }
+                        });
+
+                        Swal.fire(
+                            'Silindi!',
+                            'Müşteri Tamamen Silindi',
+                            'success'
+                        )
+                    }
+                })
             }
         }
     };

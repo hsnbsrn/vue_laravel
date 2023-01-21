@@ -58,4 +58,16 @@ class CustomerController extends Controller
         $customers = Customer::where('company_id','=',$company_id)->get();
         return response()->json($customers);
     }
+
+    public function restore($id)
+    {
+        $customer = Customer::onlyTrashed()->findOrFail($id);
+        $customer->restore();
+    }
+
+    public function forceDelete($id)
+    {
+        $customer = Customer::onlyTrashed()->findOrFail($id);
+        $customer->forceDelete();
+    }
 }

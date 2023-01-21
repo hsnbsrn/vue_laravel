@@ -17,17 +17,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::apiResource('companies',CompanyController::class);
 Route::get('deletedCompanies', [CompanyController::class, 'deletedData']);
+Route::post('companies/{id}/force_delete', [CompanyController::class, 'forceDelete']);
+Route::post('companies/{id}/restore', [CompanyController::class, 'restore']);
 
 
 Route::apiResource('customers',CustomerController::class);
-Route::get('getByCompanyId/{id}',[CustomerController::class, 'getByCompanyId']);
 Route::get('deletedCustomers', [CustomerController::class, 'deletedData']);
+Route::post('customers/{id}/force_delete', [CustomerController::class, 'forceDelete']);
+Route::post('customers/{id}/restore', [CustomerController::class, 'restore']);
+Route::get('costumers/getByCompanyId/{id}',[CustomerController::class, 'getByCompanyId']);
 
 
 
