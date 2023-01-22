@@ -219,7 +219,7 @@
                     var url = "http://localhost:8000/api/companies/"+company.id;
                     axios.delete(url);
                     this.getCompany();
-                    this.getDeletedCompany()
+                    this.getDeletedCompany();
                     Swal.fire(
                         'Silindi!',
                         'Şirket Silindi',

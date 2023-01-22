@@ -12,11 +12,12 @@ class Company extends Model
 
     protected $table = 'company';
 
-    public $primaryKey = "id";
+    protected $guarded = ["id"];
 
     public $timestamps = true;
 
-    protected $fillable = ['name'];
+    public function customers(){
+        return $this->hasMany(Customer::class);
+    }
 
-    protected $guarded = ["id"];
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="card ">
         <div class="card-header d-flex justify-content-between align-items-center">
-            {{ company.name }}
+            {{ companyName}}
             <button @click="clearCustomerandErrors()" type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Müşteri Ekle</button>
         </div>
         <div class="card-body">
@@ -248,22 +248,21 @@
                     first_name:'',
                     city:'',
                     country:'',
-                    deleted_at:''
+                    deleted_at:'',
+                    company: {
+                        name:''
+                    }
                 },
                 customers: [],
                 deleted_customers: [],
-                company:{
-                    id:'',
-                    name:''
-                },
                 errors: [],
-                isShow : false
+                isShow : false,
+                companyName:''
             }
         },
 
         created() {
             this.getCustomer()
-            this.getCompany()
             setInterval(()=>this.getCustomer(),5000)
             setInterval(()=>this.getDeletedCustomer(),5000)
 
@@ -274,18 +273,12 @@
                 var url = "http://127.0.0.1:8000/api/costumers/getByCompanyId/"+this.$route.params.id;
                 axios.get(url).then(response => {
                     this.customers = response.data;
-                });
-            },
-            getCompany() {
-                var url = "http://localhost:8000/api/companies/"+this.$route.params.id;
-                axios.get(url).then(response => {
-                this.company = response.data;
+                    this.companyName = this.customers[0].company.name;
                 });
             },
             storeCustomer() {
                 var url = "http://localhost:8000/api/customers";
                 this.customer.company_id=this.$route.params.id;
-                console.log(this.customer)
                 axios.post(url, this.customer).then(response => {
                     this.success = response.data.success;
                     this.getCustomer()
@@ -327,7 +320,6 @@
             },
 
             deleteCustomer(customer) {
-
                 Swal.fire({
                 title: 'Emin Misin?',
                 text: customer.first_name+" İsimli Müşteriyi Silmek İstediğinize Emin Misin?",

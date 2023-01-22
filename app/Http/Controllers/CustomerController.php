@@ -16,7 +16,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::all();
+        $customers = Customer::with('company')->get();
         return response()->json($customers);
     }
 
@@ -55,7 +55,7 @@ class CustomerController extends Controller
 
     public function getByCompanyId($company_id)
     {
-        $customers = Customer::where('company_id','=',$company_id)->get();
+        $customers = Customer::where('company_id','=',$company_id)->with('company')->get();
         return response()->json($customers);
     }
 

@@ -16,12 +16,14 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Company::all();
+
         return response()->json($companies);
     }
 
     public function show(Company $company)
     {
-        return response()->json($company);
+        $companies = Company::where('id',$company->id)->with('customers')->get();
+        return response()->json($companies);
     }
 
     public function store(StoreCompanyRequest $request)

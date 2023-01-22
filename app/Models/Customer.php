@@ -12,11 +12,12 @@ class Customer extends Model
 
     protected $table = 'customer';  
 
-    public $primaryKey = "id";
+    protected $guarded = ["id"];
 
     public $timestamps = true;
 
-    protected $fillable = ['is_male','first_name','city','country','birth_date','company_id'];
+    public function company(){
+        return $this->belongsTo(Company::class);
+    }
 
-    protected $guarded = ["id"];
 }
