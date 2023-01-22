@@ -103,6 +103,7 @@
                     <tr>
                     <th scope="col">#</th>
                     <th scope="col">İsim</th>
+                    <th scope="col">Silinme Tarihi</th>
                     <th scope="col">İşlemler</th>
                     </tr>
                 </thead>
@@ -110,6 +111,7 @@
                     <tr v-for="( company,index) in deleted_companies" v-bind:key="company.id">
                     <th scope="row">{{index+1}}</th>
                     <td>{{ company.name }}</td>
+                    <td>{{ company.deleted_at }}</td>
                     <td>
                         <a @click="restoreCompany(company)"    class="btn btn-sm btn-dark">Geri Yükle</a>
                         <a @click="forceDeleteCompany(company)"   class="btn btn-sm btn-danger">Tamamen Sil</a>
@@ -135,7 +137,8 @@
         success: false,
         company: {
             id:'',
-            name:''
+            name:'',
+            deleted_at:''
         },
         companies: [],
         deleted_companies: [],
@@ -220,7 +223,7 @@
                     Swal.fire(
                         'Silindi!',
                         'Şirket Silindi',
-                        'success'
+                        'success',
                     )
                 }
             })

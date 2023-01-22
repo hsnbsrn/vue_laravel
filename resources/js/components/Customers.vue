@@ -208,6 +208,7 @@
                     <th scope="col">Şehir</th>
                     <th scope="col">Ülke</th>
                     <th scope="col">Doğum Tarihi</th>
+                    <th scope="col">Silinme Tarihi</th>
                     <th scope="col">İşlemler</th>
                     </tr>
                 </thead>
@@ -220,6 +221,7 @@
                         <td>{{ customer.city }}</td>
                         <td>{{ customer.country }}</td>
                         <td>{{ customer.birth_date }}</td>
+                        <td>{{ customer.deleted_at }}</td>
                         <td>
                             <a @click="restoreCustomer(customer)"    class="btn btn-sm btn-dark">Geri Yükle</a>
                             <a @click="forceDeleteCustomer(customer)"   class="btn btn-sm btn-danger">Tamamen Sil</a>
@@ -245,7 +247,8 @@
                     is_male:'',
                     first_name:'',
                     city:'',
-                    country:''
+                    country:'',
+                    deleted_at:''
                 },
                 customers: [],
                 deleted_customers: [],
@@ -262,6 +265,7 @@
             this.getCustomer()
             this.getCompany()
             setInterval(()=>this.getCustomer(),5000)
+            setInterval(()=>this.getDeletedCustomer(),5000)
 
         },
 
