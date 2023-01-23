@@ -84,10 +84,10 @@
                     </div>
                     <div class="form-group">
                         <label>Şehir</label>
-                        <input type="text" v-model="customer.city" class="form-control" id="name">
-                        <div v-if="errors.city" >
+                        <input type="text" v-model="customer.city_id" class="form-control" id="name">
+                        <div v-if="errors.city_id" >
                             <div class="alert alert-danger" role="alert">
-                                {{errors.city[0]}}
+                                {{errors.city_id[0]}}
                             </div>
                         </div>
                     </div>
@@ -159,8 +159,8 @@
                     </div>
                     <div class="form-group">
                         <label>Şehir</label>
-                        <input type="text" v-model="customer.city" class="form-control" id="name">
-                        <div v-if="errors.city" >
+                        <input type="text" v-model="customer.city_id" class="form-control" id="name">
+                        <div v-if="errors.city_id" >
                             <div class="alert alert-danger" role="alert">
                                 {{errors.city[0]}}
                             </div>
@@ -246,7 +246,7 @@
                     birth_date:'',
                     is_male:'',
                     first_name:'',
-                    city:'',
+                    city_id:'',
                     country:'',
                     deleted_at:'',
                     company: {
@@ -263,8 +263,6 @@
 
         created() {
             this.getCustomer()
-            setInterval(()=>this.getCustomer(),5000)
-            setInterval(()=>this.getDeletedCustomer(),5000)
 
         },
 
@@ -348,7 +346,7 @@
                 this.customer.id=''
                 this.customer.first_name=''
                 this.customer.is_male=''
-                this.customer.city=''
+                this.customer.city_id=''
                 this.customer.country=''
                 this.customer.birth_date=''
                 this.errors=[]

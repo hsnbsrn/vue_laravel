@@ -20,4 +20,8 @@ class Customer extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function city(){
+        return $this->hasOne(City::class,'id','city_id');
+    }
+
 }

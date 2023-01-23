@@ -26,7 +26,7 @@ class StoreCustomerRequest extends FormRequest
         return [
             'is_male' => ['required'],
             'first_name' => ['required'],
-            'city' => ['required'],
+            'city_id' => ['required'],
             'country' => ['required'],
             'birth_date' => ['required'],
             'company_id' => ['required']
